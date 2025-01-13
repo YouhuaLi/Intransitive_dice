@@ -32,7 +32,7 @@ In 1986, Oskar van Deventer constructed a set of [7 intransitive dice for 3 play
 
 How to Use This Program
 ===
-This program can generate n-player intransitive dice sets with prime numbers of dice. It accepts an exponent as input, determines the number of players based on the OEIS sequence above, and outputs the result. For example, with 7 dice:
+This program can generate n-player intransitive dice sets with prime numbers of dice. It accepts a prime number as input, determines the number of players based on the OEIS sequence above, and outputs the result. For example, with 7 dice:
 
 ```
 python gen_intransitive_dice.py 7
