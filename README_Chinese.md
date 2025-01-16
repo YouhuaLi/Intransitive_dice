@@ -73,12 +73,12 @@ below is the dice set. Each column is a die, each row is one value of the die.
 
 在这个维基百科的[talk页面](https://en.wikipedia.org/wiki/Talk:Intransitive_dice)上，看到似乎有人在2021年就得到了同样的结果，所以这也不算新成果，但也侧面验证了程序的正确性。
 
-因为某些原因， **不是所有质数都能产生合法的intrasitive dice**。比如当参数等于67时，所产生的结果并不是合法的5-layer dice，而参数为71时可以：
+虽然没有完全测试，但这个程序对所有的质数，应该都能产生正确的结果。比如，以下能生成一组5-玩家的非传递骰子：
 
 ```
-python gen_intransitive_dice.py 71
+python gen_intransitive_dice.py 67
 ```
 
-但是运行时间会比较长。
+但是完整验证所需时间会非常长。
 
 

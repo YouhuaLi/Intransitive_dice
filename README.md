@@ -72,10 +72,10 @@ below is the dice set. Each column is a die, each row is one value of the die.
 
 On this Wikipedia [talk page](https://en.wikipedia.org/wiki/Talk:Intransitive_dice), someone seems to have arrived at the same result in 2021. While this isn’t new, it validates the program's correctness.
 
-For certain reasons, **not all prime numbers can produce valid intransitive dice**. For example, when the parameter equals 67, the resulting dice are not valid 5-layer dice, but when the parameter is 71, they are.
+Although not fully tested, this program should produce correct results for all prime numbers. For example, it can generate a set of 5-player non-transitive dice as follows:
 
 ```
-python gen_intransitive_dice.py 71
+python gen_intransitive_dice.py 67
 ```
 
-However, the runtime will be long.
+However, the time required for full verification would be extremely long.
