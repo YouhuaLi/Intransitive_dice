@@ -52,7 +52,7 @@ else:
     for n in range(0, dice_amount):
         for r in residues:
             chain = [n]
-            while len(chain)< 19:
+            while len(chain) < dice_amount:
                 chain.append( (chain[-1]-r) % dice_amount )
             chains.append(chain)
 
