@@ -89,7 +89,7 @@ d = dice
 # Check if there are any duplicate numbers in d
 duplicates = [item for sublist in d for item in sublist if d.count(item) > 1]
 assert not duplicates
-w = d_wins(d)
+#w = d_wins(d)
 #print(w)
 
 # define a function that tells you which die will beat any three dice that are given to you.
