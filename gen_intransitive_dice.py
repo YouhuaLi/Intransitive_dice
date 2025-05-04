@@ -89,16 +89,16 @@ d = dice
 # Check if there are any duplicate numbers in d
 duplicates = [item for sublist in d for item in sublist if d.count(item) > 1]
 assert not duplicates
-#w = d_wins(d)
+w = d_wins(d)
 #print(w)
 
 # define a function that tells you which die will beat any three dice that are given to you.
 def which_beats(dice):
     return {i for i,j in w.items() if all(die in j for die in dice)}
 
-#all_dice_win = lambda w: all(len(which_beats(i)) for i in it.combinations(list(w), opponents))
+all_dice_win = lambda w: all(len(which_beats(i)) for i in it.combinations(list(w), opponents))
 #make sure that all combinations of dice have a winning solution.
-#assert all_dice_win(w)
+assert all_dice_win(w)
 
 print(f"found a dice set of size {dice_amount} of {len(dice[0])} faces each with {players_amount} players")
 print("below is the dice set. Each column is a die, each row is one value of the die.")
