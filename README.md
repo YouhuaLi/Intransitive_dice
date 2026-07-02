@@ -1,6 +1,44 @@
 Intransitive Dice Generator
 ==
 
+_Last updated: 2026-07-01_
+
+Fewer Faces: a 9-Face 4-Player Set (`gen_9face_4player.py`)
+===
+
+The main construction below uses **171 faces** per die for four players. `gen_9face_4player.py` realizes the *same* four-player structure — the Paley tournament P(19) — with only **9 faces per die**.
+
+The idea is to express P(19) as the **majority of `F = 9` linear orders** ("voters"). Each order `orders[t]` is a permutation of `{0,…,18}`; die `i` then takes one face per order,
+
+```
+die_i = { 19 * t + orders[t][i] : t = 0 … 8 }
+```
+
+The `19 * t` offset puts each order's faces in a disjoint band, so cross-order comparisons cancel and
+
+```
+bias(i, j) = sum over t of sign( orders[t][i] − orders[t][j] )
+```
+
+i.e. die `i` beats die `j` exactly when a majority of the 9 orders rank `i` above `j`. The script uses a seeded simulated-annealing search to find 9 orders whose majority relation equals P(19) (reproducible), builds the dice, and verifies them with the same `all_dice_win` check as `4_players_19_dice_static_analysis.py`.
+
+Run it:
+
+```
+python gen_9face_4player.py
+```
+
+Result — **19 dice × 9 faces**, verified four-player:
+
+```
+matches Paley tournament P(19): True
+all_dice_win (every 3-coalition is beaten by some die): True
+winners-per-coalition distribution: {1: 399, 2: 513, 3: 57}
+bias values: [-3, -1, 1, 3]  ->  max win probability ~ 0.5185
+```
+
+Every one of the C(19,3) = 969 triples of dice is beaten by some fourth die, so this is a valid four-player set. The trade-off for using far fewer faces is a smaller winning margin: the 171-face set wins about **59.3%** of the time, while this 9-face set is closer to **51.9%** (so the intransitive advantage, though real, needs more rolls to show up).
+
 Intransitive Dice
 ===
 
