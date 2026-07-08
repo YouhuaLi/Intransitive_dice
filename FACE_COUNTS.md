@@ -36,7 +36,7 @@ Both are implemented in `gen_unified.py` (default = Construction 6; `--chain` = 
 | 71 | 7 | **19** | SAT ◆ (`paley71_19face.txt`); = (p+1)/4; below chain's 35; not proven minimal |
 | 79 | 7 | **39** | chain construction only; **no SAT run**; formula conjectures 21 (untested) |
 | 83 | 3 | **83** | Constr. 6 (p faces) only; **no SAT run**; formula conjectures 21 (untested) |
-| 103 | 7 | **51** | chain construction only; **no SAT run**; formula conjectures 27 (untested) |
+| 103 | 7 | **45** | residual-SAT hybrid ✚ (`sat/paley103_45face_hybrid.txt`, K=14 bilevel head + M=17 SAT); **beats chain's 51**; formula conjectures 27; sub-45 timed out at 240s |
 | 331 | 3 | **167** | "newbednay" construction (`best_results/p_331_f_167_newbednay.txt`, ≈(p+1)/2); bilevel ✦ only reaches 179 here (below crossover); formula conjectures 83 |
 | 523 | 3 | **261** | bilevel ✦ (`paley523_261face.txt`); **crossover** — first prime bilevel beats newbednay's (p+1)/2 = 262 (and Construction 6's 523); formula conjectures 131 |
 | 743 | 7 | **349** | bilevel ✦ (`paley743_349face.txt`); **beats even the chain 371** and newbednay's ≈372; formula conjectures 187 |
@@ -116,6 +116,19 @@ vs newbednay's 167)** and **p = 503 (257 vs 252)**. It also loses to SAT for sma
 `p ≈ 10⁵–3×10⁵`) — it is a restricted edge-disjoint, margin-±{1,3} scheme. The greedy is
 near its own ceiling (best-of-restarts barely moves p=331: 90 layers), so a smarter biclique
 finder would be needed to push lower or to beat newbednay below p≈520.
+
+✚ **Residual-SAT hybrid (2026-07-07).** For mid-size p where pure SAT is infeasible but the
+chain/Construction-6 are far from optimal: use a bilevel *head* (first `K` layers = `2K`
+voters, each covered arc at margin +2) then `M` SAT voters for the sparse residual, total
+`2K+M` (odd). Because covered arcs keep their +2, they need only a *weak* SAT bound
+(`c ≥ ⌊M/2⌋`) vs the residual's strict majority (`c ≥ ⌊M/2⌋+1`), so M can be small. **Key
+implementation gotcha: run SAT with symmetry breaking OFF** — SB slows *finding* a solution
+(p=103 K=20 M=9: >8 min with SB, 7.8 s without — but that speed is the hybrid's *slack*, not
+SB-off in general: pure SAT stays hard, e.g. SB-off didn't find the known P(67) d=17 in 15 min).
+Best result: **P(103) in 45 faces** (`sat/paley103_45face_hybrid.txt`, K=14 head + M=17 SAT,
+verified 0 ties), **below the chain's `(p−1)/2 = 51`**. Tool: `sat/hybrid.py`. p=331 is
+memory-unsafe for SAT (`n³·M` ≈ 8.6 GB even at M=3). Pushing p=103 below 45 and extending to
+p = 127 (chain 63) is open — see `RESEARCH_LOG.md`.
 
 ## The three categories
 
