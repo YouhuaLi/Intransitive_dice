@@ -8,17 +8,28 @@ Realizing `P(p)` makes the dice `(k+1)`-player intransitive, where `k` is the
 largest Schütte index with `γ(P(p)) ≥ k+1` (see OEIS A362137). Here we only track
 the **face count**, not the player count.
 
-## Two deterministic constructions
+## Deterministic constructions
 
 | Construction | Faces | Works for | Notes |
 |---|---|---|---|
 | **Chain** (Bednay–Bozóki "Construction 7") | **(p−1)/2** | **p ≡ 7 (mod 8)** only | closed form, instant, no search |
 | **Construction 6** (Bednay–Bozóki 2013) | **p** | **all p ≡ 3 (mod 4)** | closed form, instant, no search; each die has equal face-sum |
+| **newbednay** (`bb_direct.build_paley_3mod8`) | **(p+3)/2** | **p ≡ 3 (mod 8)** | closed form (scan `c`); realizes `P(p)` exactly |
+| **newbednay − 2 voters** ★ | **(p−1)/2** | **p ≡ 3 (mod 8), except Heegner 67 & 163** | drop 2 redundant voters (0-flip); tournament unchanged |
 
 - **Construction 6** is the universal fallback: it always gives `p` faces for any Paley prime.
 - The **chain** halves that to `(p−1)/2` whenever `p ≡ 7 (mod 8)`.
+- **newbednay** (sibling repo's `n-player/bb_direct.py`) covers the `p ≡ 3 (mod 8)`
+  primes the chain misses, at `(p+3)/2` faces (`(p+1)/2` itself is even → ties).
+- **★ newbednay − 2 voters** (2026-07-10): for `p ≡ 3 (mod 8)` the newbednay set
+  contains **2 redundant voters** — a degenerate voter (column `k=(p−1)/2`) plus one
+  of its `(p+1)/4` "0-flip" partners can be deleted, flipping **no** edges, so the
+  tournament is preserved exactly and faces drop to **`(p−1)/2`** (matching the chain's
+  count for `p ≡ 7 (mod 8)`, far below Construction 6's `p`). This **fails only for the
+  two Heegner primes `≡ 3 (mod 8)`, `p = 67` and `p = 163`** (see ★ below), which stay
+  at `(p+3)/2`.
 
-Both are implemented in `gen_unified.py` (default = Construction 6; `--chain` = chain).
+Chain and Construction 6 are in `gen_unified.py` (default = Construction 6; `--chain` = chain).
 
 ## Classification by prime
 
@@ -32,12 +43,22 @@ Both are implemented in `gen_unified.py` (default = Construction 6; `--chain` = 
 | 43 | 3 | **11** | SAT ¶ (`paley43_11face.txt`); = (p+1)/4; not proven minimal |
 | 47 | 7 | **13** | SAT ◆ (`paley47_13face.txt`); = (p+1)/4; below chain's 23; not proven minimal |
 | 59 | 3 | **15** | SAT ◆ (`paley59_15face.txt`); = (p+1)/4; beats literature's 29; not proven minimal |
-| 67 | 3 | **17** | SAT ‡◆ (`paley67_17face.txt`); = (p+1)/4; **d = 15 under test**; not proven minimal |
+| 67 | 3 | **17** | SAT ‡◆ (`paley67_17face.txt`); = (p+1)/4; **d = 15 under test**; not proven minimal. ★ Heegner: newbednay's 35 is **not** reducible |
 | 71 | 7 | **19** | SAT ◆ (`paley71_19face.txt`); = (p+1)/4; below chain's 35; not proven minimal |
 | 79 | 7 | **39** | chain construction only; **no SAT run**; formula conjectures 21 (untested) |
-| 83 | 3 | **83** | Constr. 6 (p faces) only; **no SAT run**; formula conjectures 21 (untested) |
+| 83 | 3 | **41** | newbednay − 2 voters ★ (`paley83_41face.txt`) = (p−1)/2; beats Constr. 6's 83; formula conjectures 21 |
 | 103 | 7 | **45** | residual-SAT hybrid ✚ (`sat/paley103_45face_hybrid.txt`, K=14 bilevel head + M=17 SAT); **beats chain's 51**; formula conjectures 27; sub-45 timed out at 240s |
-| 331 | 3 | **167** | "newbednay" construction (`best_results/p_331_f_167_newbednay.txt`, ≈(p+1)/2); bilevel ✦ only reaches 179 here (below crossover); formula conjectures 83 |
+| 107 | 3 | **53** | newbednay − 2 voters ★ (`paley107_53face.txt`) = (p−1)/2; beats Constr. 6's 107; formula conjectures 27 |
+| 131 | 3 | **65** | newbednay − 2 voters ★ (`paley131_65face.txt`) = (p−1)/2; beats Constr. 6's 131; formula conjectures 33 |
+| 139 | 3 | **69** | newbednay − 2 voters ★ (`paley139_69face.txt`) = (p−1)/2; beats Constr. 6's 139; formula conjectures 35 |
+| 163 | 3 | **83** | newbednay ★ (`(p+3)/2`); Heegner: **not** reducible to (p−1)/2=81; beats Constr. 6's 163; formula conjectures 41 |
+| 179 | 3 | **89** | newbednay − 2 voters ★ (`paley179_89face.txt`) = (p−1)/2; beats Constr. 6's 179; formula conjectures 45 |
+| 211 | 3 | **105** | newbednay − 2 voters ★ (`paley211_105face.txt`) = (p−1)/2; beats Constr. 6's 211; formula conjectures 53 |
+| 227 | 3 | **113** | newbednay − 2 voters ★ (`paley227_113face.txt`) = (p−1)/2; beats Constr. 6's 227; formula conjectures 57 |
+| 251 | 3 | **125** | newbednay − 2 voters ★ (`paley251_125face.txt`) = (p−1)/2; beats Constr. 6's 251; formula conjectures 63 |
+| 283 | 3 | **141** | newbednay − 2 voters ★ (`paley283_141face.txt`) = (p−1)/2; beats Constr. 6's 283; formula conjectures 71 |
+| 307 | 3 | **153** | newbednay − 2 voters ★ (`paley307_153face.txt`) = (p−1)/2; beats Constr. 6's 307; formula conjectures 77 |
+| 331 | 3 | **165** | newbednay − 2 voters ★ (`paley331_165face.txt`) = (p−1)/2; was 167 (`p_331_f_167_newbednay.txt`); bilevel ✦ reaches only 179; formula conjectures 83 |
 | 523 | 3 | **261** | bilevel ✦ (`paley523_261face.txt`); **crossover** — first prime bilevel beats newbednay's (p+1)/2 = 262 (and Construction 6's 523); formula conjectures 131 |
 | 743 | 7 | **349** | bilevel ✦ (`paley743_349face.txt`); **beats even the chain 371** and newbednay's ≈372; formula conjectures 187 |
 | 991 | 7 | **445** | bilevel ✦ (`paley991_445face.txt`); **beats even the chain 495** and newbednay's ≈496; formula conjectures 249 |
@@ -130,16 +151,43 @@ verified 0 ties), **below the chain's `(p−1)/2 = 51`**. Tool: `sat/hybrid.py`.
 memory-unsafe for SAT (`n³·M` ≈ 8.6 GB even at M=3). Pushing p=103 below 45 and extending to
 p = 127 (chain 63) is open — see `RESEARCH_LOG.md`.
 
+★ **newbednay − 2 voters → `(p−1)/2` for `p ≡ 3 (mod 8)`; Heegner exceptions 67 & 163
+(2026-07-10).** The sibling repo's `n-player/bb_direct.py` (`build_paley_3mod8(p, c)`)
+realizes `P(p)` for `p ≡ 3 (mod 8)` in **`(p+3)/2`** faces — block 0 is
+`[p]*(m+1)+[-1]*m+[0,0]`, length `k+2` with `k=(p−1)/2`, `m=k//2`; note `(p+1)/2` is *even*
+here (would allow ties) so `(p+3)/2` (odd) is the real count. Each face is one voter (columns
+occupy disjoint value-bands), so removing 2 voters flips only margin-±1 edges, and only where
+*both* removed voters back that edge's winner. For **11 of the 13** primes `p ≡ 3 (mod 8)` in
+`[67, 331]` the construction contains a **degenerate voter** (column `k`) that backs the winner
+on very few margin-1 edges, giving `(p+1)/4` "0-flip" partners; deleting `{k, a 0-flip partner}`
+flips **0** edges → the tournament is bit-identical to `P(p)` (0 ties) at **`(p−1)/2`** faces.
+Files verified (identical dominance, 0 ties): `paley{83_41,107_53,131_65,139_69,179_89,211_105,
+227_113,251_125,283_141,307_153,331_165}face.txt`. The reduced set is **tight**: for p=331 no
+further 2-voter deletion works (all `C(165,2)` break the 6-player property; min flips jumps 0→1025).
+**Exceptions: `p = 67` and `p = 163`** — no 0-flip pair for *any* verifying `c` (min flips
+`= (p−1)/2`), and a full deletion sweep confirms *every* 2-face deletion breaks validity
+(`γ(P(67))=γ(P(163))=5`, all deletions drop `γ` to 4). These are exactly the two **Heegner
+primes** (class number 1: `1,2,3,7,11,19,43,67,163`) that are `≡ 3 (mod 8)`; since the Heegner
+list ends at 163, *every* `p ≡ 3 (mod 8)` with `p > 163` is predicted to reduce (untested past
+331). All `(p−1)/2` counts here are still ≈ double the conjectured `(p+1)/4`. 6-player validity
+for p=331 was checked via the domination-number characterization with an O(n²)-verified
+`p`-cycle automorphism certificate (`paley331_165face.aut.txt`); verifier
+`verify_6player_domination.py`. See `RESEARCH_LOG.md` (2026-07-10).
+
 ## The three categories
 
 **① Deterministic → (p−1)/2 faces** — exactly the primes **p ≡ 7 (mod 8)**:
 `7, 23, 31, 47, 71, 79, 103, 127, 151, …` (chain / Construction 7).
 
-**② Deterministic → p faces** — **every** Paley prime `p ≡ 3 (mod 4)` (Construction 6).
-This is the fallback for the `p ≡ 3 (mod 8)` primes where the chain fails:
-`11, 19, 43, 59, 67, 83, …`
+**② Deterministic → (p−1)/2 faces for `p ≡ 3 (mod 8)`** — **newbednay − 2 voters** ★
+(2026-07-10), for every `p ≡ 3 (mod 8)` **except the Heegner primes 67 & 163**:
+`83, 107, 131, 139, 179, 211, 227, 251, 283, 307, 331, …`. Supersedes Construction 6
+here. The two Heegner exceptions get `(p+3)/2` (newbednay, not reducible).
 
-**③ Annealing reached (p−1)/2 where no deterministic (p−1)/2 exists** (i.e. `p ≡ 3 mod 8`):
+**②′ Deterministic → p faces** — **every** Paley prime `p ≡ 3 (mod 4)` (Construction 6);
+now only the universal fallback (e.g. still the deterministic option for 11, 19, 43, 59).
+
+**③ Annealing reached (p−1)/2 for the small `p ≡ 3 mod 8`** (11, 19):
 only the small ones — **p = 11 (5 faces)** and **p = 19 (9 faces)**. Beyond that
 (43, 59, 67, …) the simulated-annealing *stalls* within minutes — but a **SAT
 solver with column-permutation symmetry breaking** does not: it reaches
@@ -152,11 +200,12 @@ that `(p−1)/2` is near-optimal.
 - **p ≡ 7 (mod 8):** use the chain → `(p−1)/2` faces, deterministic, done.
 - **p ≡ 3 (mod 8), small (11, 19):** annealing reaches the `(p−1)/2` optimum;
   59 is known in the literature but our search doesn't reach it.
-- **p ≡ 3 (mod 8), larger (43, 59, 67, 83, …):** no *deterministic* sub-`p`
-  construction, and annealing stalls — but a **SAT solver** cracks them:
-  `P(43)` → **11 faces** (¶) and `P(67)` → **19 faces** (‡), far under both
-  Construction 6 and `(p−1)/2`. Extending this SAT approach to 59, 83, … is the
-  natural next step.
+- **p ≡ 3 (mod 8), larger (43, 59, 67, 83, …):** annealing stalls, but there are now two
+  deterministic options: **newbednay − 2 voters → `(p−1)/2`** ★ (for all `p ≡ 3 mod 8`
+  except the Heegner primes 67 & 163), and for small `p` a **SAT solver** does even better —
+  `P(43)` → **11 faces** (¶), `P(67)` → **17 faces** (‡), far under both Construction 6 and
+  `(p−1)/2`. So: use SAT where it's feasible (small `p`); otherwise newbednay − 2 gives
+  `(p−1)/2` for free (except 67, 163). Extending SAT to 59, 83, … is the natural next step.
 - **Practical consequence:** for `P(67)` you are no longer stuck at 67 faces —
   the SAT set gives **19 faces** directly (`paley67_19face.txt`). Switching to
   `p = 71` (`≡ 7 mod 8`) → 35 faces via the chain is now only attractive if you
