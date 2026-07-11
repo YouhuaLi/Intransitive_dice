@@ -159,6 +159,33 @@ Relation to the literature
 
 The Paley tournament `P(p)` is `k`-paradoxical for large enough `p` (Graham & Spencer, *A constructive solution to a tournament problem*, Canad. Math. Bull. 14, 1971). Bozóki (*Nontransitive dice sets realizing the Paley tournaments*, Miskolc Math. Notes 15, 2014) gives an explicit dice set `D_p` realizing `P(p)` with **`p(p-1)/2` faces per die** (171 for `p=19`) and equal face-sums across dice. The reduced constructions here (e.g. 9 faces for `p=19`) use **fewer** faces than that published `D_p`, at the cost of unequal sums and a smaller margin. Pushing the face count below `p(p-1)/2` is the topic of Bednay & Bozóki, *Constructions for nontransitive dice sets* (Proc. 8th Japanese-Hungarian Symposium, 2013). No minimality claim is made for the face counts in the table above.
 
+Paley Face Counts: the `newbednay − 2 voters` Reduction
+===
+
+Recent work (tracked in `FACE_COUNTS.md`, with a full log in `RESEARCH_LOG.md`) studies the
+**minimum number of faces** needed to realize the Paley tournament `P(p)` as the majority of `F`
+voters, for primes `p ≡ 3 (mod 4)`.
+
+A key result for **`p ≡ 3 (mod 8)`**: the deterministic "newbednay" construction (the sibling
+repo's `n-player/bb_direct.py`) realizes `P(p)` in `(p+3)/2` faces — but that set carries **two
+redundant voters**. Deleting a *degenerate* voter (column `k = (p−1)/2`) together with one of its
+`(p+1)/4` "0-flip" partners flips **no** edges, so the realized tournament is unchanged and the
+face count drops to **`(p−1)/2`**. That matches what the chain construction gives for
+`p ≡ 7 (mod 8)`, and is far below Construction 6's `p` faces.
+
+The reduction succeeds for every `p ≡ 3 (mod 8)` tested in `[67, 331]` **except the two Heegner
+primes `67` and `163`** (the imaginary quadratic fields of class number 1): for those, no such
+reduction exists and *every* 2-face deletion breaks the intransitive property. Since the Heegner
+list ends at 163, all larger `p ≡ 3 (mod 8)` are expected to reduce.
+
+Verified `(p−1)/2`-face sets live in `best_results/paley<p>_<(p−1)/2>face.txt` for
+`p = 83, 107, 131, 139, 179, 211, 227, 251, 283, 307, 331` — e.g. `P(331)` in **165** faces
+(down from 167). Validity is verified through the **domination-number** characterization (a set is
+a valid `n`-player set iff its dominance tournament has domination number `≥ n`, i.e. no dominating
+set of size `n−1`), since the literal `C(p, n−1)` coalition enumeration is infeasible at this size;
+see `verify_6player_domination.py` (it uses an `O(n²)`-checked automorphism certificate to make the
+proof both fast and rigorous).
+
 Unified Generator (`gen_unified.py`)
 ===
 
